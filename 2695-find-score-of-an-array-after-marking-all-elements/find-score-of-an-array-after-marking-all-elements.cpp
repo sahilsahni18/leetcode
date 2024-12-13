@@ -1,26 +1,17 @@
-//using priority queues
+//using two pointer approach
 class Solution {
 public:
-    #define ll long long
     long long findScore(vector<int>& nums) {
-        int n = nums.size();
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-        for (int i = 0; i < nums.size(); i++) {
-            pq.push({nums[i], i});
-        }
-        ll sum = 0;
-        vector<int> vis(nums.size());
-        while (!pq.empty()) {
-            if (vis[pq.top().second]) {
-                pq.pop();
-            } else {
-                int ind = pq.top().second;
-                sum += pq.top().first;
-                pq.pop();
-                vis[ind] = 1;
-                if (ind - 1 >= 0) vis[ind - 1] = 1;
-                if (ind + 1 < n) vis[ind + 1] = 1;
-            }
+         const int n = nums.size();
+        long long sum = 0;
+        for (int l = 0, r = 0; r < n; r += 2) { 
+            l = r; // Position of local maxima
+
+            while (r + 1 < n && nums[r] > nums[r + 1]) 
+                r++; // position of local minima
+
+            for (int i = r; i >= l; i -= 2) 
+                sum += nums[i];
         }
         return sum;
     }
