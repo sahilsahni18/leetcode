@@ -1,36 +1,48 @@
 class Solution {
 public:
-    int maxKDivisibleComponents(int n, vector<vector<int>>& edges, vector<int>& vals, int k) {
-        vector<vector<int>> graph(n);
-        vector<int> degree(n);
-        if (n < 2) return 1;
-        for (auto& edge : edges) {
-            graph[edge[0]].push_back(edge[1]);
-            graph[edge[1]].push_back(edge[0]);
-            degree[edge[0]]++;
-            degree[edge[1]]++;
+    #define ll long long
+    void getSubtree(int node, vector<vector<int>>& adj, int par, vector<ll>& subtree){
+        if(adj[node].size() == 1 && adj[node][0] == par){
+            return;
         }
-
-        vector<long long> nodeVal(vals.begin(), vals.end());
-        queue<int> leafQ;
-        for (int i = 0; i < n; i++) 
-            if (degree[i] == 1) leafQ.push(i);
-
-        int compCnt = 0;
-        while (!leafQ.empty()) {
-            int curr = leafQ.front();
-            leafQ.pop();
-            degree[curr]--;
-            long long carry = 0;
-            if (nodeVal[curr] % k == 0) compCnt++;
-            else carry = nodeVal[curr];
-            for (int nbr : graph[curr]) {
-                if (degree[nbr] == 0) continue;
-                degree[nbr]--;
-                nodeVal[nbr] += carry;
-                if (degree[nbr] == 1) leafQ.push(nbr);
+        for(auto it: adj[node]){
+            if(it!=par){
+                getSubtree(it, adj, node, subtree);
+                subtree[node]+=subtree[it];
             }
         }
-        return compCnt;
+    }
+    int cnt = 0;
+    void dfs(int node, vector<vector<int>>& adj, int par, vector<ll>& subtree, int k){
+        if(adj[node].size() == 1 && adj[node][0] == par){
+            return;
+        }
+        for(auto it: adj[node]){
+            if(it!=par){
+                ll parSubtree = subtree[node] - subtree[it];
+                ll childSubtree = subtree[it];
+                if(parSubtree%k == 0 && childSubtree%k == 0){
+                    cnt++;
+                    subtree[node]-=subtree[it];
+                }
+                else subtree[it] = subtree[node];
+                dfs(it, adj, node, subtree, k);
+            }
+        }
+    }
+    int maxKDivisibleComponents(int n, vector<vector<int>>& edges, vector<int>& values, int k) {
+        vector<vector<int>> adj(n+1);
+        for(auto it: edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+        vector<ll> subtree;
+        for(auto it: values){
+            subtree.push_back(it*1LL);
+        }
+        getSubtree(0, adj, -1, subtree);
+        for(auto it: subtree) cout<< it <<" ";
+        dfs(0, adj, -1, subtree, k);
+        return cnt+1;
     }
 };
