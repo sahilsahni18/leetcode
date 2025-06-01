@@ -31,9 +31,4 @@ public:
     }
 };
 
-
-// VVIP NOTE: 
-// - us.size(): return an unsigned int
-// - max: it requires both of its arguments to be of the same type.
-// - so you can't do: max(int, unsigned), even though both are integers, but have different range
-// - so we must typecast us.size() from unsigned integer to normal integer (to make datatypes of both the parameters same) 
+ 
