@@ -4,7 +4,9 @@ public:
         if (s.length() <= 1) {
             return s;
         }
-        
+        //DP APPROACH 
+        //VERY IMPORTANT IN THESE LONGEST PALINDROME TYPE QUESTIPNS
+        //ALSO AN ALGORITHM IS IMPORTANT CALLED MANACHER'S ALGORITHM THAT ALSO SOLVES THIS QUES
         int max_len = 1;
         int start = 0;
         int end = 0;
