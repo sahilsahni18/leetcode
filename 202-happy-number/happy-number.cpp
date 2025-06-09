@@ -1,21 +1,22 @@
 class Solution {
-private:
-    int nextNumber(int n){
-        int newNumber = 0;
-        while(n!=0){
-            int num = n%10;
-            newNumber += num*num;
-            n = n/10;
-        }
-        return newNumber;
-    }
 public:
-    bool isHappy(int n) {
-        unordered_set<int> set;
-        while(n!=1 && !set.count(n)){
-            set.insert(n);
-            n = nextNumber(n);
+    int sum_of_square_of_digits(int n){
+        int sum = 0;
+        while(n>0){
+            int i = n%10;
+            sum += (i*i);
+            n/=10;
         }
-        return n==1;
+        return sum;
+    }
+
+    bool isHappy(int n) {
+       int slow = n;
+       int fast = sum_of_square_of_digits(n);
+       while(fast!=1 && slow != fast){
+            slow = sum_of_square_of_digits(slow);
+            fast = sum_of_square_of_digits(sum_of_square_of_digits(fast));
+       }
+       return fast == 1;
     }
 };
