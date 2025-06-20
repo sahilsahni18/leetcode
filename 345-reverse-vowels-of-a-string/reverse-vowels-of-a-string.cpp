@@ -1,33 +1,34 @@
-class Solution {
+class Solution 
+{
+	
 public:
-    string reverseVowels(string s) {
-        // Convert the input string to a character array.
-        string word = s;
-        int start = 0;
-        int end = s.length() - 1;
-        string vowels = "aeiouAEIOU";
+    string reverseVowels(string s) 
+    {
+        int i = 0;
+        int j = s.size()-1;
         
-        // Loop until the start pointer is no longer less than the end pointer.
-        while (start < end) {
-            // Move the start pointer towards the end until it points to a vowel.
-            while (start < end && vowels.find(word[start]) == string::npos) {
-                start++;
+        while(i<j)
+        {
+            bool flag1 = false, flag2 = false;   // to check if we are pointing to a vowel or not
+            
+            if(s[i]=='a' || s[i]=='e' || s[i]=='i' || s[i]=='o' || s[i]=='u' || s[i]=='A' || s[i]=='E' || s[i]=='I' || s[i]=='O' || s[i]=='U')
+            flag1 = true;
+            
+            if(s[j]=='a' || s[j]=='e' || s[j]=='i' || s[j]=='o' || s[j]=='u' || s[j]=='A' || s[j]=='E' || s[j]=='I' || s[j]=='O' || s[j]=='U')
+            flag2 = true;
+            
+            if(flag1 && flag2)   // if both are pointing to vowels just swap them
+            {
+                swap(s[i],s[j]);
+                i++;j--; 
             }
             
-            // Move the end pointer towards the start until it points to a vowel.
-            while (start < end && vowels.find(word[end]) == string::npos) {
-                end--;
-            }
-            
-            // Swap the vowels found at the start and end positions.
-            swap(word[start], word[end]);
-            
-            // Move the pointers towards each other for the next iteration.
-            start++;
-            end--;
+            if(!flag1)    // if i is not pointing to a vowel, move the pointer forward
+            i++;
+            if(!flag2)    // if j is not pointing to a vowel, move the pointer backwards
+            j--;
         }
         
-        // Return the modified string.
-        return word;
-    }
+        return s;
+    } 
 };
