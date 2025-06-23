@@ -1,20 +1,16 @@
 class Solution {
 public:
-    int findDuplicate(std::vector<int>& nums) {
-        int slow = nums[0];
-        int fast = nums[0];
-        
-        do {
-            slow = nums[slow];
-            fast = nums[nums[fast]];
-        } while (slow != fast);
+    int findDuplicate(vector<int>& nums) {
+        unordered_map<int, int> numCount; 
 
-        slow = nums[0];
-        while (slow != fast) {
-            slow = nums[slow];
-            fast = nums[fast];
+    
+        for (int num : nums) {
+            if (numCount.find(num) != numCount.end()) {
+                return num;
+            }
+            numCount[num] = 1;
         }
 
-        return slow;
+        return -1;
     }
 };
