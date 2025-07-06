@@ -1,21 +1,47 @@
 class Solution {
 public:
-    vector<int> searchRange(vector<int>& nums, int target) {
-        int startingPosition = -1, endingPosition = -1;
-        int n = nums.size();
-        for(int i=0; i<n; i++){
-            if(nums[i] == target){
-                startingPosition = i;
-                break;
-            }
-        }
-        for(int i=n-1; i>=0; i--){
-            if(nums[i] == target){
-                endingPosition = i;
-                break;
-            }
-        }
-        return {startingPosition, endingPosition};
-    }
+    vector<int> searchRange(vector<int>& a, int target) {
+	int s = 0, e = a.size()-1;
+	vector<int> ans(2, -1);
+	//first occurrence
+	while(s <= e){
+		int m = s + (e-s)/2;
+		if(a[m] < target)
+			s = m+1;
+		else if(a[m] > target)
+			e = m-1;
+		else{
+			if(m == s || a[m] != a[m-1]){
+				ans[0] = m;
+				break;
+			}
+			else{
+				e = m-1;
+				ans[0] = m-1;
+			}
+		}
+	}
+
+	//last occurrence
+	s = 0, e = a.size()-1;
+	while(s <= e){
+		int m = s + (e-s)/2;
+		if(a[m] < target)
+			s = m+1;
+		else if(a[m] > target)
+			e = m-1;
+		else{
+			if(m == e || a[m] != a[m+1]){
+				ans[1] = m;
+				break;
+			}
+			else{
+				s = m+1;
+				ans[1] = m+1;
+			}
+		}
+	}
+	return ans; 
+}
 };
 
